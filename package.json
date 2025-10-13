@@ -1,8 +1,8 @@
 {
 	"name": "cx-tools",
-	"version": "1.0.0",
+	"version": "0.0.1",
 	"description": "ConnexCS.com Tools",
-	"main": "index.js",
+	"main": "cx-tools.js",
 	"type": "module",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1"
@@ -23,6 +23,7 @@
 		"dotenv": "^17.2.3"
 	},
 	"bin": {
-		"cx-tools": "bin.js"
+		"cx-tools": "cx-tools.js",
+		"cx": "cx-tools.js"
 	}
 }

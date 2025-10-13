@@ -1,0 +1,46 @@
+# Development files
+.env
+.env.*
+*.env
+
+# Version control
+.git/
+.gitignore
+
+# Dependencies
+node_modules/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Test files
+test/
+tests/
+*.test.js
+*.spec.js
+
+# Documentation source (keep README.md)
+docs/
+
+# Build and cache
+.cache/
+dist/
+coverage/
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+.travis.yml
+
+# Lock files (optional - uncomment if you don't want to include them)
+# package-lock.json
+# yarn.lock
