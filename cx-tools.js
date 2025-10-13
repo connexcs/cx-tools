@@ -15,7 +15,7 @@ const packageJson = JSON.parse(readFileSync(join(__dirname, 'package.json'), 'ut
 configDotenv()
 
 program
-	.name('cx-tools')
+	.name('connexcs-tools')
 	.description('ConnexCS.com Tools')
 	.version(packageJson.version)
 
@@ -32,7 +32,7 @@ program
 program
 	.command('run [id]')
 	.description('Execute a ScriptForge script by ID')
-	.option('-b, --body <body>', 'JSON request body (can be JSON string or file path)')
+	.option('-b, --body [body]', 'Include JSON request body (optionally provide JSON string or file path)')
 	.action(runAction)
 
 // Default action when no command is specified
