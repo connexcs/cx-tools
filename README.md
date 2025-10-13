@@ -75,6 +75,51 @@ cx sql "SELECT * FROM cdr dt > DATE_SUB(NOW(), INTERVAL 1 DAY) LIMIT 100" --csv 
 cx sql "SELECT dest_number, COUNT(0) as calls FROM cdr dt > DATE_SUB(NOW(), INTERVAL 1 DAY) LIMIT 100" -s | jq '.[] | select(.calls > 10)'
 ```
 
+### Key-Value Store Operations
+
+Manage KV (Key-Value) store records:
+
+```bash
+# List all KV keys
+cx kv:list
+
+# List keys in silent mode for piping
+cx kv:list -s | jq '.[] | .id'
+
+# Get a specific KV record
+cx kv:get mykey
+
+# Get with silent mode
+cx kv:get mykey -s
+
+# Set a KV record (upsert)
+cx kv:set mykey -v '{"data": "value"}'
+
+# Set a simple string value
+cx kv:set mykey -v "Hello World"
+
+# Set from a JSON file
+cx kv:set mykey -v ./data.json
+
+# Set from a text file
+cx kv:set config -v ./config.txt
+
+# Interactive mode - prompts for key and value
+cx kv:set
+
+# Delete a KV record
+cx kv:del mykey
+
+# Delete with silent mode
+cx kv:del mykey -s
+
+# Interactive delete - prompts for key
+cx kv:del
+
+# Pipe and process
+cx kv:get config -s | jq '.settings.enabled'
+```
+
 ### Configure Command Options
 
 - `-u, --username <username>`: Specify username via command line
@@ -95,6 +140,36 @@ cx sql "SELECT dest_number, COUNT(0) as calls FROM cdr dt > DATE_SUB(NOW(), INTE
 
 - `[query]`: SQL query (optional, will be prompted if not provided)
 - `--csv`: Return results in CSV format instead of JSON
+- `-s, --silent`: Silent/raw mode - outputs only response data for piping
+- `-r, --raw`: Alias for `--silent`
+
+### KV Command Options
+
+**kv:list**
+
+- `-s, --silent`: Silent/raw mode - outputs only response data for piping
+- `-r, --raw`: Alias for `--silent`
+
+**kv:get**
+
+- `[id]`: Key ID (optional, will be prompted if not provided)
+- `-s, --silent`: Silent/raw mode - outputs only response data for piping
+- `-r, --raw`: Alias for `--silent`
+
+**kv:set**
+
+- `[id]`: Key ID (optional, will be prompted if not provided)
+- `-v, --value [value]`: Value to set (string, JSON data, or file path)
+  - No `-v` flag: Prompts for value
+  - `-v` with no value: Prompts for value input
+  - `-v` with value: Uses provided string/JSON or reads from file path
+  - Automatically detects JSON and parses it, otherwise stores as string
+- `-s, --silent`: Silent/raw mode - outputs only response data for piping
+- `-r, --raw`: Alias for `--silent`
+
+**kv:del**
+
+- `[id]`: Key ID to delete (optional, will be prompted if not provided)
 - `-s, --silent`: Silent/raw mode - outputs only response data for piping
 - `-r, --raw`: Alias for `--silent`
 
@@ -156,7 +231,7 @@ The tool provides clear error messages for common issues:
 
 - Checkout App ID
 - ~~SQL on CDR & Userspace Databases + Export as CSV~~ ✅ Implemented
-- KV Get/Set/List
+- ~~KV Get/Set/List~~ ✅ Implemented
 - Query Builder
 - Sync between local file system and ConnexCS
 - ScriptForge Remote Logs
