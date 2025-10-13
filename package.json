@@ -1,0 +1,28 @@
+{
+	"name": "cx-tools",
+	"version": "1.0.0",
+	"description": "ConnexCS.com Tools",
+	"main": "index.js",
+	"type": "module",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/connexcs/cx-tools.git"
+	},
+	"author": "Jonathan Hulme <jhulme@connexcs.com>",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/connexcs/cx-tools/issues"
+	},
+	"homepage": "https://github.com/connexcs/cx-tools#readme",
+	"dependencies": {
+		"@inquirer/prompts": "^7.8.6",
+		"commander": "^14.0.1",
+		"dotenv": "^17.2.3"
+	},
+	"bin": {
+		"cx-tools": "bin.js"
+	}
+}
