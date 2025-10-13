@@ -45,8 +45,11 @@ This command will:
 Execute ScriptForge scripts on your ConnexCS platform:
 
 ```bash
-# Interactive mode - prompts for ID
+# Interactive mode - fetches and displays available scripts
 cx run
+
+# If APP_ID is configured, only shows scripts for that app
+# Otherwise, shows all scripts
 
 # Provide ScriptForge ID as argument
 cx run 12345
