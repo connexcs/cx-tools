@@ -5,7 +5,7 @@ ConnexCS Tools
 ## Installation
 
 ```bash
-npm install -g cx-tools
+npm install -g connexcs-tools
 ```
 
 ## Usage
@@ -16,13 +16,13 @@ Set up your ConnexCS username and password credentials that will be validated an
 
 ```bash
 # Interactive prompts (recommended)
-cx-tools configure
+cx configure
 
 # Using command line flags
-cx-tools configure --username myuser --password mypass
+cx configure --username myuser --password mypass
 
 # Force overwrite existing .env file
-cx-tools configure --force
+cx configure --force
 ```
 
 ### Run ScriptForge Scripts
@@ -30,30 +30,50 @@ cx-tools configure --force
 Execute ScriptForge scripts on your ConnexCS platform:
 
 ```bash
-# Interactive mode - prompts for ID and request body options
-cx-tools run
+# Interactive mode - prompts for ID
+cx run
 
-# Provide ScriptForge ID as argument (will prompt for body options)
-cx-tools run 12345
+# Provide ScriptForge ID as argument
+cx run 12345
 
-# Provide both ID and JSON request body
-cx-tools run 12345 --body '{"key": "value"}'
+# No body (default)
+cx run 12345
+
+# Prompt for body input
+cx run 12345 -b
+
+# Provide JSON request body
+cx run 12345 -b '{"key": "value"}'
 
 # Use a JSON file as request body
-cx-tools run 12345 --body request.json
+cx run 12345 -b request.json
 
-# Combine argument and option
-cx-tools run --body '{"data": "test"}' 12345
+# Silent/raw mode for piping
+cx run 12345 -s | jq '.result'
+cx run 12345 --raw > output.json
 ```
 
-### Interactive Body Options
+### Execute SQL Queries
 
-When no `--body` option is provided, the tool will prompt you with:
+Query the CDR database or Userspace databases:
 
-- **No body (send empty POST request)**: Sends an empty JSON object `{}`
-- **Provide JSON data**: Opens an editor where you can:
-  - Enter JSON data directly: `{"key": "value"}`
-  - Specify a file path: `./data.json`
+```bash
+# Interactive mode - prompts for SQL query
+cx sql
+
+# Provide SQL query as argument
+cx sql "SELECT * FROM cdr WHERE dt > DATE_SUB(NOW(), INTERVAL 1 DAY) LIMIT 10"
+
+# Return results as CSV
+cx sql "SELECT * FROM cdr dt > DATE_SUB(NOW(), INTERVAL 1 DAY) LIMIT 10" --csv
+
+# Silent mode for piping to files
+cx sql "SELECT * FROM cdr WHERE dt > DATE_SUB(NOW(), INTERVAL 1 DAY) duration > 60" -s > results.json
+cx sql "SELECT * FROM cdr dt > DATE_SUB(NOW(), INTERVAL 1 DAY) LIMIT 100" --csv -s > data.csv
+
+# Pipe to other tools
+cx sql "SELECT dest_number, COUNT(0) as calls FROM cdr dt > DATE_SUB(NOW(), INTERVAL 1 DAY) LIMIT 100" -s | jq '.[] | select(.calls > 10)'
+```
 
 ### Configure Command Options
 
@@ -64,7 +84,19 @@ When no `--body` option is provided, the tool will prompt you with:
 ### Run Command Options
 
 - `[id]`: ScriptForge ID (optional, will be prompted if not provided)
-- `-b, --body <body>`: JSON request body (can be JSON string or file path)
+- `-b, --body [body]`: Include JSON request body (optionally provide JSON string or file path)
+  - No `-b` flag: Sends empty body `{}`
+  - `-b` with no value: Prompts for JSON input
+  - `-b` with value: Uses provided JSON or file path
+- `-s, --silent`: Silent/raw mode - outputs only response data for piping
+- `-r, --raw`: Alias for `--silent`
+
+### SQL Command Options
+
+- `[query]`: SQL query (optional, will be prompted if not provided)
+- `--csv`: Return results in CSV format instead of JSON
+- `-s, --silent`: Silent/raw mode - outputs only response data for piping
+- `-r, --raw`: Alias for `--silent`
 
 ### Authentication Validation
 
@@ -120,11 +152,10 @@ The tool provides clear error messages for common issues:
 - `Invalid JSON data`: Check your JSON syntax in request body
 - `ScriptForge does not exist`: Verify the ScriptForge ID is correct
 
-
-# TODO:
+## TODO
 
 - Checkout App ID
-- SQL on CDR & Userspace Databases + Export as CSV
+- ~~SQL on CDR & Userspace Databases + Export as CSV~~ ✅ Implemented
 - KV Get/Set/List
 - Query Builder
 - Sync between local file system and ConnexCS

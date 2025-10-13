@@ -3,6 +3,7 @@
 import { program } from 'commander'
 import { configureAction } from './lib/configure.js'
 import { runAction } from './lib/run.js'
+import { sqlAction } from './lib/sql.js'
 import { configDotenv } from 'dotenv'
 import { readFileSync } from 'fs'
 import { fileURLToPath } from 'url'
@@ -37,13 +38,23 @@ program
 	.option('-r, --raw', 'Alias for --silent')
 	.action(runAction)
 
+// Command to execute SQL queries on CDR database
+program
+	.command('sql [query]')
+	.description('Execute SQL query on CDR database')
+	.option('--csv', 'Return results in CSV format instead of JSON')
+	.option('-s, --silent', 'Silent/raw mode - output only response data without formatting (suitable for piping)')
+	.option('-r, --raw', 'Alias for --silent')
+	.action(sqlAction)
+
 // Default action when no command is specified
 program
 	.action(() => {
-		console.log('Welcome to cx-tools!')
-		console.log('Run "cx-tools configure" to set up your credentials.')
-		console.log('Run "cx-tools run <id>" to execute a ScriptForge script.')
-		console.log('Use "cx-tools --help" to see available commands.')
+		console.log('Welcome to connexcs-tools!')
+		console.log('Run "cx configure" to set up your credentials.')
+		console.log('Run "cx run <id>" to execute a ScriptForge script.')
+		console.log('Run "cx sql <query>" to execute SQL queries on CDR database.')
+		console.log('Use "cx --help" to see available commands.')
 	})
 
 program.parse(process.argv)
