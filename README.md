@@ -25,6 +25,21 @@ cx configure --username myuser --password mypass
 cx configure --force
 ```
 
+### Configure App
+
+Select an App ID to use for API requests. This requires credentials to be configured first:
+
+```bash
+# Interactive app selection
+cx configure:app
+```
+
+This command will:
+
+1. Fetch all available apps from your ConnexCS account
+2. Display them in a selectable list
+3. Save the selected App ID to your `.env` file
+
 ### Run ScriptForge Scripts
 
 Execute ScriptForge scripts on your ConnexCS platform:
@@ -122,9 +137,15 @@ cx kv:get config -s | jq '.settings.enabled'
 
 ### Configure Command Options
 
+**configure**
+
 - `-u, --username <username>`: Specify username via command line
 - `-p, --password <password>`: Specify password via command line  
 - `-f, --force`: Force overwrite existing .env file
+
+**configure:app**
+
+- No options - interactive app selection from available apps
 
 ### Run Command Options
 
@@ -229,7 +250,7 @@ The tool provides clear error messages for common issues:
 
 ## TODO
 
-- Checkout App ID
+- ~~Checkout App ID~~ ✅ Implemented
 - ~~SQL on CDR & Userspace Databases + Export as CSV~~ ✅ Implemented
 - ~~KV Get/Set/List~~ ✅ Implemented
 - Query Builder

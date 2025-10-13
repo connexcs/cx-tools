@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { program } from 'commander'
-import { configureAction } from './lib/configure.js'
+import { configureAction, configureAppAction } from './lib/configure.js'
 import { runAction } from './lib/run.js'
 import { sqlAction } from './lib/sql.js'
 import { kvListAction, kvGetAction, kvSetAction, kvDelAction } from './lib/kv.js'
@@ -29,6 +29,12 @@ program
 	.option('-p, --password <password>', 'Password for authentication')
 	.option('-f, --force', 'Force overwrite existing .env file')
 	.action(configureAction)
+
+// Command to configure app
+program
+	.command('configure:app')
+	.description('Configure the App ID for API requests')
+	.action(configureAppAction)
 
 // Command to run ScriptForge scripts
 program
@@ -83,6 +89,7 @@ program
 	.action(() => {
 		console.log('Welcome to connexcs-tools!')
 		console.log('Run "cx configure" to set up your credentials.')
+		console.log('Run "cx configure:app" to select an app.')
 		console.log('Run "cx run <id>" to execute a ScriptForge script.')
 		console.log('Run "cx sql <query>" to execute SQL queries on CDR database.')
 		console.log('Run "cx kv:list" to list all KV keys.')
