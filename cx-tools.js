@@ -12,7 +12,7 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 const packageJson = JSON.parse(readFileSync(join(__dirname, 'package.json'), 'utf-8'))
 	
-configDotenv()
+configDotenv({quiet: true})
 
 program
 	.name('connexcs-tools')
@@ -33,6 +33,8 @@ program
 	.command('run [id]')
 	.description('Execute a ScriptForge script by ID')
 	.option('-b, --body [body]', 'Include JSON request body (optionally provide JSON string or file path)')
+	.option('-s, --silent', 'Silent/raw mode - output only response data without formatting (suitable for piping)')
+	.option('-r, --raw', 'Alias for --silent')
 	.action(runAction)
 
 // Default action when no command is specified
