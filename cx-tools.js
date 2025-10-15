@@ -5,6 +5,7 @@ import { configureAction, configureAppAction } from './lib/configure.js'
 import { runAction } from './lib/run.js'
 import { sqlAction } from './lib/sql.js'
 import { kvListAction, kvGetAction, kvSetAction, kvDelAction } from './lib/kv.js'
+import { pullAction, clearAction, pushAction } from './lib/sync.js'
 import { configDotenv } from 'dotenv'
 import { readFileSync } from 'fs'
 import { fileURLToPath } from 'url'
@@ -84,6 +85,30 @@ program
 	.option('-r, --raw', 'Alias for --silent')
 	.action(kvDelAction)
 
+// Command to pull ScriptForge scripts to local ./src folder
+program
+	.command('pull')
+	.description('Pull ScriptForge scripts to ./src folder (filtered by APP_ID)')
+	.option('-s, --silent', 'Silent/raw mode - suppress decorative output')
+	.option('-r, --raw', 'Alias for --silent')
+	.action(pullAction)
+
+// Command to clear the ./src folder
+program
+	.command('clear')
+	.description('Clear all files from ./src folder (with confirmation)')
+	.option('-s, --silent', 'Silent/raw mode - suppress decorative output')
+	.option('-r, --raw', 'Alias for --silent')
+	.action(clearAction)
+
+// Command to push local changes back to ScriptForge
+program
+	.command('push')
+	.description('Push local ./src changes to ScriptForge (creates/updates)')
+	.option('-s, --silent', 'Silent/raw mode - suppress decorative output')
+	.option('-r, --raw', 'Alias for --silent')
+	.action(pushAction)
+
 // Default action when no command is specified
 program
 	.action(() => {
@@ -96,6 +121,9 @@ program
 		console.log('Run "cx kv:get <id>" to get a KV record.')
 		console.log('Run "cx kv:set <id>" to set a KV record.')
 		console.log('Run "cx kv:del <id>" to delete a KV record.')
+		console.log('Run "cx pull" to download ScriptForge scripts to ./src')
+		console.log('Run "cx push" to upload local changes to ScriptForge')
+		console.log('Run "cx clear" to clear the ./src folder')
 		console.log('Use "cx --help" to see available commands.')
 	})
 

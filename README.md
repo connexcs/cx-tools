@@ -251,14 +251,131 @@ The tool provides clear error messages for common issues:
 - `Invalid JSON data`: Check your JSON syntax in request body
 - `ScriptForge does not exist`: Verify the ScriptForge ID is correct
 
+## Sync Commands
+
+Sync your ScriptForge scripts between ConnexCS and your local filesystem.
+
+### Pull Scripts
+
+Download all ScriptForge scripts to your local `./src` folder:
+
+```bash
+# Pull scripts (filtered by configured APP_ID)
+cx pull
+```
+
+This command will:
+1. Fetch all ScriptForge scripts from your account
+2. Filter by configured APP_ID (if set)
+3. Show you which files will be downloaded
+4. Ask for confirmation
+5. Save each script as `<name>.js` in the `./src` folder
+
+**Example output:**
+```
+📥 Files to be pulled:
+══════════════════════════════════════════════════
+  • my-script.js (ID: 123)
+  • another-script.js (ID: 124)
+══════════════════════════════════════════════════
+📊 Total: 2 file(s)
+? Pull 2 file(s) to ./src? (Y/n)
+```
+
+### Push Changes
+
+Upload local changes back to ScriptForge:
+
+```bash
+# Push local changes
+cx push
+```
+
+This command will:
+1. Read all `.js` files from `./src`
+2. Fetch remote scripts to compare
+3. Detect changes (modified or new files)
+4. Show you what will be updated/created
+5. Ask for confirmation
+6. **UPDATE** existing scripts (PUT request)
+7. **CREATE** new scripts (POST request)
+
+**Example output:**
+```
+📤 Changes to be pushed:
+══════════════════════════════════════════════════
+📝 Files to UPDATE:
+  • my-script.js (ID: 123)
+✨ Files to CREATE:
+  • new-script.js
+══════════════════════════════════════════════════
+📊 Total: 2 change(s) (1 update, 1 create)
+? Push 2 change(s) to ScriptForge? (Y/n)
+```
+
+**Important Notes:**
+- Changed files are detected by comparing local code with remote code
+- Unchanged files are skipped automatically
+- New files require an APP_ID to be configured (`cx configure:app`)
+- File names must match the script names (e.g., `my-script.js` → script name: `my-script`)
+
+### Clear Local Files
+
+Clear all files from your `./src` folder:
+
+```bash
+# Clear ./src folder
+cx clear
+```
+
+This command will:
+1. List all files in `./src`
+2. Ask for confirmation (defaults to No for safety)
+3. Delete all files from the folder
+
+**Example output:**
+```
+🗑️  Files to be deleted:
+══════════════════════════════════════════════════
+  • my-script.js
+  • another-script.js
+══════════════════════════════════════════════════
+📊 Total: 2 file(s)
+⚠️  Delete all 2 file(s) from ./src? (y/N)
+```
+
+### Sync Workflow
+
+Typical workflow for syncing scripts:
+
+```bash
+# 1. Configure credentials and app
+cx configure
+cx configure:app
+
+# 2. Pull existing scripts from ConnexCS
+cx pull
+
+# 3. Edit scripts locally in ./src/
+# ... make your changes ...
+
+# 4. Push changes back to ConnexCS
+cx push
+
+# 5. Optional: Clear local files when done
+cx clear
+```
+
 ## TODO
 
 - ~~Checkout App ID~~ ✅ Implemented
 - ~~SQL on CDR & Userspace Databases + Export as CSV~~ ✅ Implemented
 - ~~KV Get/Set/List~~ ✅ Implemented
+- ~~Sync between local file system and ConnexCS~~ ✅ Implemented
 - Query Builder
-- Sync between local file system and ConnexCS
 - ScriptForge Remote Logs
 - Investigate Call-ID
 - Live Tail
 - Live Calls Line per call / Dialogs Live UI
+
+```
