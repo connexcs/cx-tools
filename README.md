@@ -255,38 +255,51 @@ The tool provides clear error messages for common issues:
 
 ## Sync Commands
 
-Sync your ScriptForge scripts between ConnexCS and your local filesystem.
+Sync your ScriptForge scripts and SQL queries between ConnexCS and your local filesystem.
 
 ### Pull Scripts
 
-Download all ScriptForge scripts to your local `./src` folder:
+Download all ScriptForge scripts and SQL queries to your local folders:
 
 ```bash
-# Pull scripts (filtered by configured APP_ID)
+# Pull scripts and queries (filtered by configured APP_ID)
 cx pull
 ```
 
 This command will:
-1. Fetch all ScriptForge scripts from your account
+1. Fetch all ScriptForge scripts and SQL queries from your account
 2. Filter by configured APP_ID (if set)
-3. Show you which files will be downloaded
-4. Ask for confirmation
-5. Save each script as `<name>.js` in the `./src` folder
+3. Detect any local files that will be overwritten
+4. **Show diffs** for files with local changes (if any)
+5. Ask for confirmation
+6. Save each script as `<name>.js` in `./src` and queries as `<name>.sql` in `./query`
 
-**Example output:**
+**Example output with diff viewing:**
 ```
 📥 Files to be pulled:
 ══════════════════════════════════════════════════
-  • my-script.js (ID: 123)
-  • another-script.js (ID: 124)
+
+📜 ScriptForge Scripts: 2 file(s)
+  • my-script.js ⚠️  (will overwrite local changes)
+  • another-script.js
+
 ══════════════════════════════════════════════════
-📊 Total: 2 file(s)
-? Pull 2 file(s) to ./src? (Y/n)
+📊 Total: 2 file(s) (2 scripts, 0 queries)
+⚠️  Warning: 1 file(s) have local changes that will be overwritten
+
+? Files with local changes detected. What would you like to do?
+  ❯ View diffs before proceeding
+    Continue without viewing diffs
+    Cancel pull operation
 ```
+
+If you choose to view diffs, you'll see a color-coded diff for each file:
+- **Green lines** (`+`): Content that will be added (from remote)
+- **Red lines** (`-`): Content that will be removed (your local changes)
 
 ### Push Changes
 
-Upload local changes back to ScriptForge:
+Upload local changes back to ScriptForge and SQL queries:
 
 ```bash
 # Push local changes
@@ -294,36 +307,48 @@ cx push
 ```
 
 This command will:
-1. Read all `.js` files from `./src`
-2. Fetch remote scripts to compare
+1. Read all `.js` files from `./src` and `.sql` files from `./query`
+2. Fetch remote scripts and queries to compare
 3. Detect changes (modified or new files)
-4. Show you what will be updated/created
-5. Ask for confirmation
-6. **UPDATE** existing scripts (PUT request)
-7. **CREATE** new scripts (POST request)
+4. **Show diffs** for files that will be updated (if any)
+5. Show you what will be updated/created
+6. Ask for confirmation
+7. **UPDATE** existing scripts/queries (PUT request)
+8. **CREATE** new scripts/queries (POST request)
 
-**Example output:**
+**Example output with diff viewing:**
 ```
 📤 Changes to be pushed:
 ══════════════════════════════════════════════════
-📝 Files to UPDATE:
-  • my-script.js (ID: 123)
-✨ Files to CREATE:
-  • new-script.js
+
+� ScriptForge Scripts:
+  📝 To UPDATE:
+    • my-script.js (ID: 123)
+  ✨ To CREATE:
+    • new-script.js
+
 ══════════════════════════════════════════════════
 📊 Total: 2 change(s) (1 update, 1 create)
-? Push 2 change(s) to ScriptForge? (Y/n)
+
+? Would you like to view diffs before pushing?
+  ❯ View diffs for files to be updated
+    Continue without viewing diffs
+    Cancel push operation
 ```
+
+If you choose to view diffs, you'll see a color-coded diff for each file being updated:
+- **Red lines** (`-`): Content that will be removed (current remote version)
+- **Green lines** (`+`): Content that will be added (your local changes)
 
 **Important Notes:**
 - Changed files are detected by comparing local code with remote code
 - Unchanged files are skipped automatically
 - New files require an APP_ID to be configured (`cx configure:app`)
-- File names must match the script names (e.g., `my-script.js` → script name: `my-script`)
+- File names must match the script/query names (e.g., `my-script.js` → script name: `my-script`)
 
 ### Clear Local Files
 
-Clear all files from your `./src` folder:
+Clear all files from your `./src` and `./query` folders:
 
 ```bash
 # Clear ./src folder
