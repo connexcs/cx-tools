@@ -214,9 +214,11 @@ Upon successful authentication, credentials are saved to a `.env` file in the cu
 
 ```env
 # Company: Your Company Name
-USERNAME=your_username
-PASSWORD=your_password
+CX_USERNAME=your_username
+CX_PASSWORD="your_password"
 ```
+
+**Note**: The password is wrapped in quotes to properly handle special characters like `#`, `$`, spaces, etc.
 
 ### Security
 
