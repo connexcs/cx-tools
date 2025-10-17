@@ -257,6 +257,8 @@ The tool provides clear error messages for common issues:
 
 Sync your ScriptForge scripts and SQL queries between ConnexCS and your local filesystem.
 
+**Performance:** All network requests (GET/PUT/POST) are executed in parallel for maximum speed.
+
 ### Pull Scripts
 
 Download all ScriptForge scripts and SQL queries to your local folders:
@@ -268,11 +270,12 @@ cx pull
 
 This command will:
 1. Fetch all ScriptForge scripts and SQL queries from your account
-2. Filter by configured APP_ID (if set)
-3. Detect any local files that will be overwritten
-4. **Show diffs** for files with local changes (if any)
-5. Ask for confirmation
-6. Save each script as `<name>.js` in `./src` and queries as `<name>.sql` in `./query`
+2. **Fetch all file contents in parallel** for faster performance
+3. Filter by configured APP_ID (if set)
+4. Detect any local files that will be overwritten
+5. **Show diffs** for files with local changes (if any)
+6. Ask for confirmation
+7. Save each script as `<name>.js` in `./src` and queries as `<name>.sql` in `./query`
 
 **Example output with diff viewing:**
 ```
@@ -308,13 +311,13 @@ cx push
 
 This command will:
 1. Read all `.js` files from `./src` and `.sql` files from `./query`
-2. Fetch remote scripts and queries to compare
+2. **Fetch remote scripts and queries in parallel** for faster comparison
 3. Detect changes (modified or new files)
 4. **Show diffs** for files that will be updated (if any)
 5. Show you what will be updated/created
 6. Ask for confirmation
-7. **UPDATE** existing scripts/queries (PUT request)
-8. **CREATE** new scripts/queries (POST request)
+7. **UPDATE and CREATE all changes in parallel** for maximum speed
+8. Display results as they complete
 
 **Example output with diff viewing:**
 ```
