@@ -372,7 +372,7 @@ cx clear
 - ~~SQL on CDR & Userspace Databases + Export as CSV~~ ✅ Implemented
 - ~~KV Get/Set/List~~ ✅ Implemented
 - ~~Sync between local file system and ConnexCS~~ ✅ Implemented
-- Query Builder
+- Query Builder ✅ Implemented
 - ScriptForge Remote Logs
 - Investigate Call-ID
 - Live Tail

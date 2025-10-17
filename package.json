@@ -1,6 +1,6 @@
 {
 	"name": "connexcs-tools",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"description": "ConnexCS.com Tools",
 	"main": "cx-tools.js",
 	"type": "module",
