@@ -28,10 +28,11 @@ cx configure --force
 **How it works:**
 1. Your username and password are validated against the ConnexCS API
 2. If valid, a 30-day refresh token is obtained from `/api/cp/auth/jwt/refresh`
-3. The refresh token is securely saved to your `.env` file
-4. This token is used to obtain short-lived access tokens for each API request
-5. **Automatic Renewal**: When a token has less than 15 days remaining, it's automatically renewed during any API request
-6. You can manually refresh anytime by running `cx configure --force`
+3. The token is tied to your machine using an audience claim (`cx-tools@hostname`)
+4. The refresh token is securely saved to your `.env` file
+5. This token is used to obtain short-lived access tokens for each API request
+6. **Automatic Renewal**: When a token has less than 15 days remaining, it's automatically renewed during any API request
+7. You can manually refresh anytime by running `cx configure --force`
 
 ### Configure App
 
