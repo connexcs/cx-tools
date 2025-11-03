@@ -12,7 +12,7 @@ npm install -g connexcs-tools
 
 ### Configure Credentials
 
-Set up your ConnexCS username and password credentials that will be validated and stored in a `.env` file:
+Set up your ConnexCS credentials to obtain a 30-day refresh token that will be stored in a `.env` file:
 
 ```bash
 # Interactive prompts (recommended)
@@ -24,6 +24,14 @@ cx configure --username myuser --password mypass
 # Force overwrite existing .env file
 cx configure --force
 ```
+
+**How it works:**
+1. Your username and password are validated against the ConnexCS API
+2. If valid, a 30-day refresh token is obtained from `/api/cp/auth/jwt/refresh`
+3. The refresh token is securely saved to your `.env` file
+4. This token is used to obtain short-lived access tokens for each API request
+5. **Automatic Renewal**: When a token has less than 15 days remaining, it's automatically renewed during any API request
+6. You can manually refresh anytime by running `cx configure --force`
 
 ### Configure App
 
@@ -199,32 +207,53 @@ cx kv:get config -s | jq '.settings.enabled'
 
 ### Authentication Validation
 
-The tool validates your credentials against the ConnexCS API before saving them:
+The tool uses JWT (JSON Web Token) authentication with a two-step process:
 
-- Makes a request to `https://connexcs.com/api/cp/setup/account`
-- Uses HTTP Basic Authentication with your credentials
-- Verifies the response contains your company information
-- Only saves credentials if authentication is successful
+1. **Initial Setup** (`cx configure`):
+   - Validates your username and password via Basic Auth
+   - Requests a 30-day refresh token from `/api/cp/auth/jwt/refresh`
+   - Saves the refresh token to `.env` file
+
+2. **API Requests** (automatic):
+   - Uses the refresh token to obtain a short-lived access token from `/api/cp/auth/jwt`
+   - Uses the access token in `Authorization: Bearer <token>` header for API requests
+   - This happens automatically for every command
+
+3. **Automatic Token Renewal**:
+   - Before each API request, the system checks if the refresh token has less than 15 days remaining
+   - If it does, the token is automatically renewed for another 30 days
+   - A notification is displayed (unless in silent mode): "🔄 Refresh token has less than 15 days remaining. Renewing automatically..."
+   - Your `.env` file is automatically updated with the new token
+   - No manual intervention needed!
 
 If username or password are not provided via flags, you will be prompted to enter them interactively.
 
+**Token Expiration:**
+- Refresh tokens are valid for **30 days**
+- Access tokens are short-lived (typically minutes)
+- Tokens with less than **15 days remaining** are automatically renewed
+- Manual refresh available with `cx configure --force`
+
 ### Output Format
 
-Upon successful authentication, credentials are saved to a `.env` file in the current working directory:
+Upon successful authentication, a refresh token is saved to a `.env` file in the current working directory:
 
 ```env
 # Company: Your Company Name
-CX_USERNAME=your_username
-CX_PASSWORD="your_password"
+# Refresh Token (Valid for 30 days)
+CX_REFRESH_TOKEN="your_refresh_token_here"
 ```
 
-**Note**: The password is wrapped in quotes to properly handle special characters like `#`, `$`, spaces, etc.
+**Note**: The refresh token is wrapped in quotes and valid for 30 days from the time it was issued.
 
 ### Security
 
-- **Authentication Required**: Credentials are validated before being saved
+- **JWT Authentication**: Uses industry-standard JWT tokens instead of storing passwords
+- **Token Lifecycle**: Refresh token (30 days) and short-lived access tokens for enhanced security
+- **Authentication Required**: Credentials are validated before token issuance
 - **Git Protection**: The `.env` file is automatically ignored by git to prevent accidental commit
-- **Local Storage**: Credentials are stored locally and never transmitted except for validation
+- **Local Storage**: Tokens are stored locally and never transmitted except during authentication
+- **Automatic Token Management**: Access tokens are automatically refreshed for each request
 
 ### Input Detection
 
@@ -247,6 +276,8 @@ The tool intelligently handles different response types:
 The tool provides clear error messages for common issues:
 
 - `Invalid username or password`: Check your ConnexCS login credentials
+- `Refresh token expired or invalid`: Run `cx configure` again to obtain a new token
+- `Failed to get access token`: Check your refresh token or reconfigure
 - `API endpoint not found`: Verify the ConnexCS API is accessible
 - `Server error`: Try again later or contact ConnexCS support
 - `Network error`: Check your internet connection

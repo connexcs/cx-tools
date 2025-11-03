@@ -25,7 +25,7 @@ program
 // Command to configure credentials
 program
 	.command('configure')
-	.description('Configure username and password credentials')
+	.description('Configure authentication and obtain refresh token (valid for 30 days)')
 	.option('-u, --username <username>', 'Username for authentication')
 	.option('-p, --password <password>', 'Password for authentication')
 	.option('-f, --force', 'Force overwrite existing .env file')
