@@ -8,6 +8,8 @@ ConnexCS Tools
 npm install -g connexcs-tools
 ```
 
+![Installation Demo](https://cdn.cnxcdn.com/npm/cx-tools/install.gif)
+
 ## Usage
 
 ### Configure Credentials
@@ -53,6 +55,8 @@ This command will:
 
 Execute ScriptForge scripts on your ConnexCS platform:
 
+![Run Demo](https://cdn.cnxcdn.com/npm/cx-tools/cxrun.gif)
+
 ```bash
 # Interactive mode - fetches and displays available scripts
 cx run
@@ -84,6 +88,8 @@ cx run 12345 --raw > output.json
 
 Query the CDR database or Userspace databases:
 
+![SQL Demo](https://cdn.cnxcdn.com/npm/cx-tools/cxsql.gif)
+
 ```bash
 # Interactive mode - prompts for SQL query
 cx sql
@@ -105,6 +111,8 @@ cx sql "SELECT dest_number, COUNT(0) as calls FROM cdr dt > DATE_SUB(NOW(), INTE
 ### Key-Value Store Operations
 
 Manage KV (Key-Value) store records:
+
+![KV Store Demo](https://cdn.cnxcdn.com/npm/cx-tools/cxkv.gif)
 
 ```bash
 # List all KV keys
@@ -290,6 +298,8 @@ The tool provides clear error messages for common issues:
 Sync your ScriptForge scripts and SQL queries between ConnexCS and your local filesystem.
 
 **Performance:** All network requests (GET/PUT/POST) are executed in parallel for maximum speed.
+
+![Sync Demo](https://cdn.cnxcdn.com/npm/cx-tools/pullpush.gif)
 
 ### Pull Scripts
 
