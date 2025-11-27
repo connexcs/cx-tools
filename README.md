@@ -214,6 +214,74 @@ cx kv:get config -s | jq '.settings.enabled'
 - `-s, --silent`: Silent/raw mode - outputs only response data for piping
 - `-r, --raw`: Alias for `--silent`
 
+### Environment Variables Operations
+
+Manage server-side environment variables:
+
+```bash
+# List all environment variables
+cx env:list
+
+# List variables in silent mode for piping
+cx env:list -s | jq '.[].key'
+
+# Get a specific environment variable by key
+cx env:get myvar
+
+# Get with silent mode
+cx env:get myvar -s
+
+# Set an environment variable (upsert by key)
+cx env:set myvar -v 'my value'
+
+# Set from a file
+cx env:set myvar -v ./config.txt
+
+# Interactive mode - prompts for key and value
+cx env:set
+
+# Delete an environment variable by key
+cx env:del myvar
+
+# Delete with silent mode
+cx env:del myvar -s
+
+# Interactive delete - prompts for key
+cx env:del
+
+# Pipe and process
+cx env:list -s | jq '.[] | select(.key == "myvar")'
+```
+
+### ENV Command Options
+
+**env:list**
+
+- `-s, --silent`: Silent/raw mode - outputs only key/value pairs as JSON array
+- `-r, --raw`: Alias for `--silent`
+
+**env:get**
+
+- `[key]`: Variable key (optional, will be prompted if not provided)
+- `-s, --silent`: Silent/raw mode - outputs only key/value as JSON
+- `-r, --raw`: Alias for `--silent`
+
+**env:set**
+
+- `[key]`: Variable key (optional, will be prompted if not provided)
+- `-v, --value [value]`: Value to set (string or file path)
+  - No `-v` flag: Prompts for value
+  - `-v` with no value: Prompts for value input
+  - `-v` with value: Uses provided string or reads from file path
+- `-s, --silent`: Silent/raw mode - outputs only key/value as JSON
+- `-r, --raw`: Alias for `--silent`
+
+**env:del**
+
+- `[key]`: Variable key to delete (optional, will be prompted if not provided)
+- `-s, --silent`: Silent/raw mode - suppress decorative output
+- `-r, --raw`: Alias for `--silent`
+
 ### Authentication Validation
 
 The tool uses JWT (JSON Web Token) authentication with a two-step process:

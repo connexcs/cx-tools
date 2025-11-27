@@ -5,6 +5,7 @@ import { configureAction, configureAppAction } from './lib/configure.js'
 import { runAction } from './lib/run.js'
 import { sqlAction } from './lib/sql.js'
 import { kvListAction, kvGetAction, kvSetAction, kvDelAction } from './lib/kv.js'
+import { envListAction, envGetAction, envSetAction, envDelAction } from './lib/env.js'
 import { pullAction, clearAction, pushAction } from './lib/sync.js'
 import { configDotenv } from 'dotenv'
 import { readFileSync } from 'fs'
@@ -85,6 +86,36 @@ program
 	.option('-r, --raw', 'Alias for --silent')
 	.action(kvDelAction)
 
+// ENV (Environment Variables) commands
+program
+	.command('env:list')
+	.description('List all environment variables')
+	.option('-s, --silent', 'Silent/raw mode - output only response data without formatting (suitable for piping)')
+	.option('-r, --raw', 'Alias for --silent')
+	.action(envListAction)
+
+program
+	.command('env:get [key]')
+	.description('Get an environment variable by key')
+	.option('-s, --silent', 'Silent/raw mode - output only response data without formatting (suitable for piping)')
+	.option('-r, --raw', 'Alias for --silent')
+	.action(envGetAction)
+
+program
+	.command('env:set [key]')
+	.description('Set an environment variable by key (upsert)')
+	.option('-v, --value [value]', 'Value to set (string or file path)')
+	.option('-s, --silent', 'Silent/raw mode - output only response data without formatting (suitable for piping)')
+	.option('-r, --raw', 'Alias for --silent')
+	.action(envSetAction)
+
+program
+	.command('env:del [key]')
+	.description('Delete an environment variable by key')
+	.option('-s, --silent', 'Silent/raw mode - output only response data without formatting (suitable for piping)')
+	.option('-r, --raw', 'Alias for --silent')
+	.action(envDelAction)
+
 // Command to pull ScriptForge scripts to local ./src folder
 program
 	.command('pull')
@@ -121,6 +152,10 @@ program
 		console.log('Run "cx kv:get <id>" to get a KV record.')
 		console.log('Run "cx kv:set <id>" to set a KV record.')
 		console.log('Run "cx kv:del <id>" to delete a KV record.')
+		console.log('Run "cx env:list" to list all environment variables.')
+		console.log('Run "cx env:get <id>" to get an environment variable.')
+		console.log('Run "cx env:set <id>" to set an environment variable.')
+		console.log('Run "cx env:del <id>" to delete an environment variable.')
 		console.log('Run "cx pull" to download ScriptForge scripts to ./src')
 		console.log('Run "cx push" to upload local changes to ScriptForge')
 		console.log('Run "cx clear" to clear the ./src folder')
