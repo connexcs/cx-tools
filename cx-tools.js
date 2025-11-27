@@ -42,6 +42,7 @@ program
 program
 	.command('run [id]')
 	.description('Execute a ScriptForge script by ID')
+	.option('-f, --fn <function>', 'Function name to execute within the script')
 	.option('-b, --body [body]', 'Include JSON request body (optionally provide JSON string or file path)')
 	.option('-s, --silent', 'Silent/raw mode - output only response data without formatting (suitable for piping)')
 	.option('-r, --raw', 'Alias for --silent')
