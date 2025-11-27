@@ -46,6 +46,8 @@ program
 	.option('-b, --body [body]', 'Include JSON request body (optionally provide JSON string or file path)')
 	.option('-s, --silent', 'Silent/raw mode - output only response data without formatting (suitable for piping)')
 	.option('-r, --raw', 'Alias for --silent')
+	.option('--no-sse', 'Disable SSE log streaming (logs are streamed by default)')
+	.option('--log-delay <ms>', 'Delay in ms to wait for late logs after result received (default: 2000)', '2000')
 	.action(runAction)
 
 // Command to execute SQL queries on CDR database
