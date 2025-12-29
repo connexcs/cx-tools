@@ -141,3 +141,4 @@ vite.config.ts.timestamp-*
 src
 query
 cx.env
+template
