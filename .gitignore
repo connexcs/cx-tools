@@ -142,3 +142,4 @@ src
 query
 cx.env
 template
+cx.toml

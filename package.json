@@ -18,6 +18,7 @@
 	},
 	"homepage": "https://github.com/connexcs/cx-tools#readme",
 	"dependencies": {
+		"@iarna/toml": "^2.2.5",
 		"@inquirer/prompts": "^7.8.6",
 		"commander": "^14.0.1",
 		"diff": "^8.0.2",
