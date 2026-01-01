@@ -130,7 +130,7 @@ program
 // Command to clear the ./src folder
 program
 	.command('clear')
-	.description('Clear all files from ./src folder (with confirmation)')
+	.description('Clear all files from ./src, ./query, ./template folders and delete cx.env/cx.toml (with confirmation)')
 	.option('-s, --silent', 'Silent/raw mode - suppress decorative output')
 	.option('-r, --raw', 'Alias for --silent')
 	.action(clearAction)
