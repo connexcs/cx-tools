@@ -19,7 +19,7 @@ const packageJson = JSON.parse(readFileSync(join(__dirname, 'package.json'), 'ut
 configDotenv({quiet: true})
 
 program
-	.name('connexcs-tools')
+	.name('@connexcs/tools')
 	.description('ConnexCS.com Tools')
 	.version(packageJson.version)
 
@@ -146,7 +146,7 @@ program
 // Default action when no command is specified
 program
 	.action(() => {
-		console.log('Welcome to connexcs-tools!')
+		console.log('Welcome to @connexcs/tools!')
 		console.log('Run "cx configure" to set up your credentials.')
 		console.log('Run "cx configure:app" to select an app.')
 		console.log('Run "cx run <id>" to execute a ScriptForge script.')

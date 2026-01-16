@@ -5,7 +5,7 @@ ConnexCS Tools
 ## Installation
 
 ```bash
-npm install -g connexcs-tools
+npm install -g @connexcs/tools
 ```
 
 ![Installation Demo](https://cdn.cnxcdn.com/npm/cx-tools/install.gif)
