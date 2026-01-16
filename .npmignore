@@ -46,6 +46,7 @@ Thumbs.db
 # yarn.lock
 
 src
+page
 query
 cx.env
 template
