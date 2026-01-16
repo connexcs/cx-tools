@@ -1,6 +1,6 @@
 {
 	"name": "@connexcs/tools",
-	"version": "0.0.13",
+	"version": "0.0.14",
 	"description": "ConnexCS.com Tools",
 	"main": "cx-tools.js",
 	"type": "module",
@@ -17,6 +17,9 @@
 		"url": "https://github.com/connexcs/cx-tools/issues"
 	},
 	"homepage": "https://github.com/connexcs/cx-tools#readme",
+	"publishConfig": {
+		"access": "public"
+	},
 	"dependencies": {
 		"@iarna/toml": "^2.2.5",
 		"@inquirer/prompts": "^7.8.6",

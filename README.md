@@ -94,18 +94,27 @@ Query the CDR database or Userspace databases:
 # Interactive mode - prompts for SQL query
 cx sql
 
-# Provide SQL query as argument
+# Provide SQL query as argument (CDR database by default)
 cx sql "SELECT * FROM cdr WHERE dt > DATE_SUB(NOW(), INTERVAL 1 DAY) LIMIT 10"
 
+# Query userspace database with -u flag
+cx sql "SELECT * FROM myTable WHERE status = 'active'" -u
+
 # Return results as CSV
-cx sql "SELECT * FROM cdr dt > DATE_SUB(NOW(), INTERVAL 1 DAY) LIMIT 10" --csv
+cx sql "SELECT * FROM cdr WHERE dt > DATE_SUB(NOW(), INTERVAL 1 DAY) LIMIT 10" --csv
+
+# Prepared statements with parameters
+cx sql "SELECT * FROM cdr WHERE dest_number = :dest LIMIT 10" -p '{"dest": "+1234567890"}'
+
+# Parameters from JSON file
+cx sql "SELECT * FROM cdr WHERE dt > :start_date AND status = :status" -p ./params.json
 
 # Silent mode for piping to files
-cx sql "SELECT * FROM cdr WHERE dt > DATE_SUB(NOW(), INTERVAL 1 DAY) duration > 60" -s > results.json
-cx sql "SELECT * FROM cdr dt > DATE_SUB(NOW(), INTERVAL 1 DAY) LIMIT 100" --csv -s > data.csv
+cx sql "SELECT * FROM cdr WHERE dt > DATE_SUB(NOW(), INTERVAL 1 DAY) AND duration > 60" -s > results.json
+cx sql "SELECT * FROM cdr WHERE dt > DATE_SUB(NOW(), INTERVAL 1 DAY) LIMIT 100" --csv -s > data.csv
 
 # Pipe to other tools
-cx sql "SELECT dest_number, COUNT(0) as calls FROM cdr dt > DATE_SUB(NOW(), INTERVAL 1 DAY) LIMIT 100" -s | jq '.[] | select(.calls > 10)'
+cx sql "SELECT dest_number, COUNT(*) as calls FROM cdr WHERE dt > DATE_SUB(NOW(), INTERVAL 1 DAY) LIMIT 100" -s | jq '.[] | select(.calls > 10)'
 ```
 
 ### Key-Value Store Operations

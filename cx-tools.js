@@ -53,7 +53,9 @@ program
 // Command to execute SQL queries on CDR database
 program
 	.command('sql [query]')
-	.description('Execute SQL query on CDR database')
+	.description('Execute SQL query on CDR or Userspace database')
+	.option('-u, --userspace', 'Query userspace database instead of CDR (default: CDR)')
+	.option('-p, --params [params]', 'JSON parameters for prepared statements (JSON string or file path)')
 	.option('--csv', 'Return results in CSV format instead of JSON')
 	.option('-s, --silent', 'Silent/raw mode - output only response data without formatting (suitable for piping)')
 	.option('-r, --raw', 'Alias for --silent')
