@@ -515,6 +515,44 @@ cx push
 cx clear
 ```
 
+### AI Instructions
+
+Copy AI instruction files to your project's `.github/` directory. These instructions help GitHub Copilot understand how to work with ConnexCS tools in your project:
+
+```bash
+# Copy AI instructions to .github/ directory
+cx ai-instructions
+
+# Silent mode (no output)
+cx ai-instructions --silent
+```
+
+This command will:
+1. Create `.github/` directory if it doesn't exist
+2. Copy all AI instruction files (`*.instructions.md`) from the package
+3. Download comprehensive ScriptForge API documentation from ConnexCS CDN:
+   - Main ScriptForge environment documentation
+   - Complete API reference for all built-in modules (cxKV, cxRest, cxJob, cxC5Server, etc.)
+4. Update `.gitignore` with rules to ignore instruction and API files
+5. Update `.npmignore` if it exists
+
+The AI instructions include detailed guidance for:
+- Setup and authentication
+- ScriptForge script development
+- Sync operations (pull/push)
+- SQL query execution
+- Key-Value store operations
+- Environment variable management
+
+**ScriptForge API Documentation:**
+The command downloads the complete runtime API documentation including:
+- Environment overview and execution types
+- All built-in modules (cxKV, cxRest, cxJob, cxCallControl, cxC5Server, etc.)
+- Function parameters and authentication
+- ES module syntax and NPM library usage
+
+**Note:** GitHub Copilot automatically uses instruction files found in the `.github/` directory to provide better context-aware assistance for your project.
+
 ## TODO
 
 - ~~Checkout App ID~~ ✅ Implemented

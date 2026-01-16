@@ -7,6 +7,7 @@ import { sqlAction } from './lib/sql.js'
 import { kvListAction, kvGetAction, kvSetAction, kvDelAction } from './lib/kv.js'
 import { envListAction, envGetAction, envSetAction, envDelAction } from './lib/env.js'
 import { pullAction, clearAction, pushAction } from './lib/sync.js'
+import { aiInstructionsAction } from './lib/ai-instructions.js'
 import { configDotenv } from 'dotenv'
 import { readFileSync } from 'fs'
 import { fileURLToPath } from 'url'
@@ -145,6 +146,14 @@ program
 	.option('-r, --raw', 'Alias for --silent')
 	.action(pushAction)
 
+// Command to copy AI instructions to .github
+program
+	.command('ai-instructions')
+	.description('Copy AI instruction files to .github/ and update ignore files')
+	.option('-s, --silent', 'Silent/raw mode - suppress decorative output')
+	.option('-r, --raw', 'Alias for --silent')
+	.action(aiInstructionsAction)
+
 // Default action when no command is specified
 program
 	.action(() => {
@@ -164,6 +173,7 @@ program
 		console.log('Run "cx pull" to download ScriptForge scripts to ./src')
 		console.log('Run "cx push" to upload local changes to ScriptForge')
 		console.log('Run "cx clear" to clear the ./src folder')
+		console.log('Run "cx ai-instructions" to copy AI instructions to .github/')
 		console.log('Use "cx --help" to see available commands.')
 	})
 
