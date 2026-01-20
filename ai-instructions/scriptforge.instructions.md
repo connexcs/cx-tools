@@ -6,13 +6,18 @@ Execute and manage ScriptForge scripts on the ConnexCS platform.
 
 SCRIPTFORGE DOES NOT EXECUTE LOCALLY. Please referer to scriptforge-api-README.md for environment (and script execution) details.
 
+**Note:** An APP_ID must be configured (`cx configure:app`) to run scripts. The script identifier can be:
+- A numeric ID (e.g., `123`)
+- A UUID (e.g., `550e8400-e29b-41d4-a716-446655440000`)
+- A filename without extension (e.g., `my-script` for `my-script.js`)
+
 ## Running Scripts
 
 ### Command: `cx run`
 
 ```bash
 cx run                      # Interactive: select from available scripts
-cx run <id>                 # Run script by ScriptForge ID or name
+cx run <id>                 # Run script by ID, UUID, or filename
 cx run <id> -f <function>   # Run specific function within the script
 cx run <id> -b              # Prompt for JSON request body
 cx run <id> -b '{"key":"value"}'  # Inline JSON body
@@ -26,7 +31,7 @@ cx run <id> --log-delay 5000  # Wait 5s for late logs (default: 2000ms)
 
 | Option | Alias | Description |
 |--------|-------|-------------|
-| `[id]` | | ScriptForge ID or name (optional, prompts if not provided) |
+| `[id]` | | Script ID, UUID, or filename (optional, prompts if not provided) |
 | `-f` | `--fn` | Function name to execute within the script |
 | `-b` | `--body` | JSON request body (string, file path, or prompt) |
 | `-s` | `--silent` | Raw output only (for piping) |

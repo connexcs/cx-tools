@@ -64,8 +64,9 @@ cx run
 # If APP_ID is configured, only shows scripts for that app
 # Otherwise, shows all scripts
 
-# Provide ScriptForge ID as argument
+# Provide script identifier as argument (ID, UUID, or filename without extension)
 cx run 12345
+cx run my-script
 
 # No body (default)
 cx run 12345
@@ -74,14 +75,14 @@ cx run 12345
 cx run 12345 -b
 
 # Provide JSON request body
-cx run 12345 -b '{"key": "value"}'
+cx run my-script -b '{"key": "value"}'
 
 # Use a JSON file as request body
 cx run 12345 -b request.json
 
 # Silent/raw mode for piping
 cx run 12345 -s | jq '.result'
-cx run 12345 --raw > output.json
+cx run my-script --raw > output.json
 ```
 
 ### Execute SQL Queries
