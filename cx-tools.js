@@ -8,6 +8,7 @@ import { kvListAction, kvGetAction, kvSetAction, kvDelAction } from './lib/kv.js
 import { envListAction, envGetAction, envSetAction, envDelAction } from './lib/env.js'
 import { pullAction, clearAction, pushAction } from './lib/sync.js'
 import { aiInstructionsAction } from './lib/ai-instructions.js'
+import { findEnvFile } from './lib/utils.js'
 import { configDotenv } from 'dotenv'
 import { readFileSync } from 'fs'
 import { fileURLToPath } from 'url'
@@ -16,8 +17,14 @@ import { dirname, join } from 'path'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 const packageJson = JSON.parse(readFileSync(join(__dirname, 'package.json'), 'utf-8'))
-	
-configDotenv({quiet: true})
+
+// Load .env from current directory or parent directories
+const envPath = findEnvFile()
+if (envPath) {
+	configDotenv({ path: envPath, quiet: true })
+} else {
+	configDotenv({ quiet: true })
+}
 
 program
 	.name('@connexcs/tools')
