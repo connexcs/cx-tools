@@ -144,3 +144,7 @@ query
 cx.env
 template
 cx.toml
+
+# AI Instructions
+.github/*.instructions.md
+.github/scriptforge-api-*.md
