@@ -6,7 +6,7 @@ import { runAction } from './lib/run.js'
 import { sqlAction } from './lib/sql.js'
 import { kvListAction, kvGetAction, kvSetAction, kvDelAction } from './lib/kv.js'
 import { envListAction, envGetAction, envSetAction, envDelAction } from './lib/env.js'
-import { pullAction, clearAction, pushAction } from './lib/sync.js'
+import { pullAction, clearAction, pushAction, pushRunAction } from './lib/sync.js'
 import { aiInstructionsAction } from './lib/ai-instructions.js'
 import { findEnvFile } from './lib/utils.js'
 import { configDotenv } from 'dotenv'
@@ -131,8 +131,8 @@ program
 
 // Command to pull ScriptForge scripts to local ./src folder
 program
-	.command('pull')
-	.description('Pull ScriptForge scripts to ./src folder (filtered by APP_ID)')
+	.command('pull [filename]')
+	.description('Pull ScriptForge scripts to ./src folder (or a specific file)')
 	.option('-s, --silent', 'Silent/raw mode - suppress decorative output')
 	.option('-r, --raw', 'Alias for --silent')
 	.action(pullAction)
@@ -147,11 +147,24 @@ program
 
 // Command to push local changes back to ScriptForge
 program
-	.command('push')
-	.description('Push local ./src changes to ScriptForge (creates/updates)')
+	.command('push [filename]')
+	.description('Push local ./src changes to ScriptForge (or a specific file)')
 	.option('-s, --silent', 'Silent/raw mode - suppress decorative output')
 	.option('-r, --raw', 'Alias for --silent')
 	.action(pushAction)
+
+// Command to push and run in a single operation
+program
+	.command('push-run <id>')
+	.alias('pr')
+	.description('Push a specific script file and immediately run it')
+	.option('-f, --fn <function>', 'Function name to execute within the script')
+	.option('-b, --body [body]', 'Include JSON request body (optionally provide JSON string or file path)')
+	.option('-s, --silent', 'Silent/raw mode - output only response data without formatting')
+	.option('-r, --raw', 'Alias for --silent')
+	.option('--no-sse', 'Disable SSE log streaming (logs are streamed by default)')
+	.option('--log-delay <ms>', 'Delay in ms to wait for late logs after result received (default: 2000)', '2000')
+	.action(pushRunAction)
 
 // Command to copy AI instructions to .github
 program
@@ -179,6 +192,7 @@ program
 		console.log('Run "cx env:del <id>" to delete an environment variable.')
 		console.log('Run "cx pull" to download ScriptForge scripts to ./src')
 		console.log('Run "cx push" to upload local changes to ScriptForge')
+		console.log('Run "cx push-run <id>" or "cx pr <id>" to push and run')
 		console.log('Run "cx clear" to clear the ./src folder')
 		console.log('Run "cx ai-instructions" to copy AI instructions to .github/')
 		console.log('Use "cx --help" to see available commands.')
